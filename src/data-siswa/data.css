@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #e6f0ff, #cfd9f6);
+  padding: 40px;
+  color: #1e293b;
+}
+
+.app {
+  max-width: 900px;
+  margin: auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 26px;
+  margin-bottom: 28px;
+  box-shadow:
+    0 20px 40px rgba(59, 130, 246, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+h2 {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #1d4ed8;
+  letter-spacing: 1px;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+form input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #c7d2fe;
+  background-color: #f8fafc;
+  font-size: 14px;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+}
+
+form button {
+  grid-column: span 3;
+  padding: 14px;
+  margin-bottom: 30px;
+  border-radius: 14px;
+  border: none;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  color: #1e3a8a;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  box-shadow: 0 8px 20px rgba(234, 179, 8, 0.4);
+}
+
+form button:hover {
+  background: linear-gradient(135deg, #fde68a, #facc15);
+}
+
+table {
+  width: 100%;
+  border-collapse: inherit;}
+
+thead {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+}
+
+th {
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+tbody tr {
+  transition: background 0.3s ease;
+}
+
+tbody tr:hover {
+  background: rgba(219, 234, 254, 0.6);
+}
+
+td button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+td button:first-child {
+  background: linear-gradient(135deg, #a5f3fc, #67e8f9);
+  color: #075985;
+  margin-right: 6px;
+}
+
+td button:last-child {
+  background: linear-gradient(135deg, #fecaca, #fca5a5);
+  color: #7f1d1d;
+}
+
+tbody td[colspan] {
+  text-align: center;
+  color: #64748b;
+  padding: 30px;
+}
+
+@media (max-width: 700px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  form button {
+    grid-column: span 1;
+  }
+}

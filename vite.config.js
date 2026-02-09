@@ -12,6 +12,8 @@ export default defineConfig({
         helloworld: 'src/hello-world/main.jsx',
         counter: 'src/counter/main.jsx',
         Tugas: 'src/bikin-website/main.jsx',
+        note: 'note.html',
+        data: 'src/data-siswa/main.jsx',
       }
     }
   }
