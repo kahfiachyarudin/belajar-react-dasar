@@ -1,40 +1,56 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { NotesDispatchContext } from "./NoteContext";
 
-export default function Note({note, onChange, Ondelete}){
-    const [isEditing, setIsEditing] = useState(false);
-    let component;
+export default function Note({ note }) {
+  const dispatch = useContext(NotesDispatchContext);
+  const [isEditing, setIsEditing] = useState(false);
 
-    function handleChangeText(e) {
-        const newNote = { ...note, text: e.target.value };
-        onChange(newNote)
-    }
+  function handleChangeText(e) {
+    dispatch({
+      type: "CHANGE_NOTE",
+      id: note.id,
+      text: e.target.value,
+      done: note.done,
+    });
+  }
 
-    if (isEditing) {
-        component = (
-            <>
-                <input value={note.text} onChange={handleChangeText} />
-                <button onClick={() => setIsEditing(false)}>Save</button>
-            </>
-        )
-    } else {
-        component = (
-            <>
-                {note.text}
-                <button onClick={() => setIsEditing(true)}>Edit</button>
-            </>
-        )
-    }
+  function handleChangeDone(e) {
+    dispatch({
+      type: "CHANGE_NOTE",
+      id: note.id,
+      text: note.text,
+      done: e.target.checked,
+    });
+  }
 
-    function HandleChangeDone(e) {
-        const newNote = { ...note, done: e.target.checked };
-        onChange(newNote)
-    }
+  function handleDelete() {
+    dispatch({
+      type: "DELETE_NOTE",
+      id: note.id,
+    });
+  }
 
-    return (
-        <div>
-            <input type="checkbox" checked={note.done} onChange={HandleChangeDone} />
-            {component}
-            <button onClick={() => Ondelete(note)}>Delete</button>
-        </div>
-    )
+  return (
+    <div>
+      <input
+        type="checkbox"
+        checked={note.done}
+        onChange={handleChangeDone}
+      />
+
+      {isEditing ? (
+        <>
+          <input value={note.text} onChange={handleChangeText} />
+          <button onClick={() => setIsEditing(false)}>Save</button>
+        </>
+      ) : (
+        <>
+          {note.text}
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        </>
+      )}
+
+      <button onClick={handleDelete}>Delete</button>
+    </div>
+  );
 }

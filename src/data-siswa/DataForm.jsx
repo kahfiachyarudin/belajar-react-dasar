@@ -1,55 +1,65 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { DataDispatchContext } from "./DataContext";
 
-export default function DataForm({ onAdd, onUpdate, editData }) {
-  const [nama, setNama] = useState("");
-  const [umur, setUmur] = useState("");
-  const [kelas, setKelas] = useState("");
+export default function DataForm() {
+  const dispatch = useContext(DataDispatchContext);
 
-  useEffect(() => {
-    if (editData) {
-      setNama(editData.nama);
-      setUmur(editData.umur);
-      setKelas(editData.kelas);
-    }
-  }, [editData]);
+  const [form, setForm] = useState({
+    nama: "",
+    umur: "",
+    kelas: "",
+  });
 
-  const handleSubmit = (e) => {
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
 
-    if (!nama || !umur || !kelas) return;
-
-    if (editData) {
-      onUpdate({ id: editData.id, nama, umur, kelas });
-    } else {
-      onAdd({ nama, umur, kelas });
+    // Validasi: semua input harus terisi
+    if (!form.nama.trim() || !form.umur.trim() || !form.kelas.trim()) {
+      alert("Semua field harus diisi!");
+      return;
     }
 
-    setNama("");
-    setUmur("");
-    setKelas("");
-  };
+    dispatch({
+      type: "ADD_SISWA",
+      nama: form.nama,
+      umur: form.umur,
+      kelas: form.kelas,
+    });
+
+    setForm({ nama: "", umur: "", kelas: "" });
+  }
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        placeholder="Nama"
-        value={nama}
-        onChange={(e) => setNama(e.target.value)}
+        type="text"
+        placeholder="Masukan Nama"
+        name="nama"
+        value={form.nama}
+        onChange={handleChange}
+        required
       />
       <input
-        placeholder="Umur"
-        value={umur}
-        onChange={(e) => setUmur(e.target.value)}
+        type="number"
+        placeholder="Masukan Umur"
+        name="umur"
+        value={form.umur}
+        onChange={handleChange}
+        required
       />
       <input
-        placeholder="Kelas"
-        value={kelas}
-        onChange={(e) => setKelas(e.target.value)}
+        type="text"
+        placeholder="Masukan Kelas"
+        name="kelas"
+        value={form.kelas}
+        onChange={handleChange}
+        required
       />
-
-      <button type="submit">
-        {editData ? "Update" : "Tambah"}
-      </button>
+      <button type="submit">Tambah</button>
     </form>
   );
 }

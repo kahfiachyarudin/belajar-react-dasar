@@ -1,8 +1,12 @@
 import DataSiswa from "./DataSiswa";
+import { useContext } from "react";
+import { DataContext } from "./DataContext";
 
-export default function DataTable({ data, onDelete, onEdit }) {
+export default function DataTable() {
+  const siswa = useContext(DataContext);
+
   return (
-    <table border="1" cellPadding="8">
+    <table>
       <thead>
         <tr>
           <th>No</th>
@@ -12,25 +16,14 @@ export default function DataTable({ data, onDelete, onEdit }) {
           <th>Aksi</th>
         </tr>
       </thead>
-
       <tbody>
-        {data.length === 0 ? (
-          <tr>
-            <td colSpan="5" style={{ textAlign: "center" }}>
-              Data masih kosong
-            </td>
-          </tr>
-        ) : (
-          data.map((siswa, index) => (
-            <DataSiswa
-              key={siswa.id}
-              siswa={siswa}
-              index={index}
-              onDelete={onDelete}
-              onEdit={onEdit}
-            />
-          ))
-        )}
+        {siswa.map((s, index) => (
+          <DataSiswa
+            key={s.id}
+            siswa={s}
+            nomor={index + 1}
+          />
+        ))}
       </tbody>
     </table>
   );

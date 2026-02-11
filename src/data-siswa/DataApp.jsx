@@ -1,49 +1,52 @@
-import { useState } from "react";
+import { useImmerReducer } from "use-immer";
+import { DataContext, DataDispatchContext } from "./DataContext";
 import DataForm from "./DataForm";
 import DataTable from "./DataTable";
 
+let id = 1;
+
+const initialSiswa = [
+  { id: id++, nama: "Andi", umur: 16, kelas: "X RPL" },
+  { id: id++, nama: "Budi", umur: 17, kelas: "XI RPL" },
+  { id: id++, nama: "Caca", umur: 16, kelas: "X RPL" },
+  { id: id++, nama: "Deni", umur: 18, kelas: "XII RPL" },
+];
+
+function siswaReducer(siswa, action) {
+  if (action.type === "ADD_SISWA") {
+    siswa.push({
+      id: id++,
+      nama: action.nama,
+      umur: action.umur,
+      kelas: action.kelas,
+    });
+  } 
+  else if (action.type === "CHANGE_SISWA") {
+    const data = siswa.find((s) => s.id === action.id);
+    if (data) {
+      data.nama = action.nama;
+      data.umur = action.umur;
+      data.kelas = action.kelas;
+    }
+  } 
+  else if (action.type === "DELETE_SISWA") {
+    const index = siswa.findIndex((s) => s.id === action.id);
+    if (index !== -1) siswa.splice(index, 1);
+  }
+}
+
 export default function DataApp() {
-  const [dataSiswa, setDataSiswa] = useState([]);
-  const [editId, setEditId] = useState(null);
-
-  const handleAdd = (siswa) => {
-    setDataSiswa([...dataSiswa, { ...siswa, id: Date.now() }]);
-  };
-
-  const handleDelete = (id) => {
-    setDataSiswa(dataSiswa.filter((s) => s.id !== id));
-  };
-
-  const handleEdit = (id) => {
-    setEditId(id);
-  };
-
-  const handleUpdate = (updatedSiswa) => {
-    setDataSiswa(
-      dataSiswa.map((s) =>
-        s.id === updatedSiswa.id ? updatedSiswa : s
-      )
-    );
-    setEditId(null);
-  };
-
-  const siswaYangDiedit = dataSiswa.find((s) => s.id === editId);
+  const [siswa, dispatch] = useImmerReducer(siswaReducer, initialSiswa);
 
   return (
-    <div>
-      <h2>Data Siswa</h2>
-
-      <DataForm
-        onAdd={handleAdd}
-        onUpdate={handleUpdate}
-        editData={siswaYangDiedit}
-      />
-
-      <DataTable
-        data={dataSiswa}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
-    </div>
+    <DataContext.Provider value={siswa}>
+      <DataDispatchContext.Provider value={dispatch}>
+        <div className="app-container">
+          <h1>Data Penerimaan Siswa</h1>
+          <DataForm />
+          <DataTable />
+        </div>
+      </DataDispatchContext.Provider>
+    </DataContext.Provider>
   );
 }

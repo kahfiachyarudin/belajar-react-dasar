@@ -1,28 +1,16 @@
-import DataSiswa from "./DataSiswa";
+import Note from "./Note.jsx";
+import { useContext } from "react";
+import { NoteContext } from "../context/NoteContext.jsx";
 
-export default function NoteList({ notes, onChange, onDelete }) {
+export default function NoteList() {
+    const { notes} = useContext(NoteContext); 
     return (
-        // <ul>
-        //     {notes.map((note) => (
-        //        <li key={note.id}>
-        //          <Note note={note} onChange={onChange} Ondelete={onDelete} />
-        //        </li>
-        //     ))}
-        // </ul>
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Kelas</th>
-                    <th>Umur</th>
-                </tr>
-            </thead>
-            <tbody>
-                {notes.map((note) => (
-                    <Note key={note.id} note={note} onChange={onChange} Ondelete={onDelete} />
-                ))}
-            </tbody>
-        </table>
+        <ul>
+            {notes.map((note) => (
+                <li key={note.id}>
+                    <Note note={note} />
+                </li>
+            ))}
+        </ul>
     );
 }
